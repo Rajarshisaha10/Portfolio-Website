@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 207 90% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 200 12% 95%;
+    --secondary-foreground: 0 0% 15%;
+    --muted: 200 12% 95%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 207 90% 42%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 207 90% 42%;
+    --radius: 0.5rem;
+
+    /* Windows 11 specific tokens */
+    --win-mica: 0 0% 100% / 0.72;
+    --win-acrylic: 0 0% 100% / 0.65;
+    --win-subtle: 0 0% 0% / 0.04;
+    --win-subtle-hover: 0 0% 0% / 0.06;
+    --win-shadow: 0 8px 32px -8px hsl(0 0% 0% / 0.14), 0 2px 8px -2px hsl(0 0% 0% / 0.08);
+    --win-border: 0 0% 0% / 0.08;
+    --win-taskbar: 0 0% 100% / 0.78;
+    --win-start-menu: 0 0% 98% / 0.88;
+    --win-title-bar: 0 0% 100% / 0.85;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 10% 8%;
+    --foreground: 0 0% 95%;
+    --card: 220 10% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 220 10% 10%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 207 90% 54%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 10% 16%;
+    --secondary-foreground: 0 0% 90%;
+    --muted: 220 10% 16%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 207 90% 54%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 207 90% 54%;
+
+    --win-mica: 220 10% 8% / 0.78;
+    --win-acrylic: 220 10% 6% / 0.72;
+    --win-subtle: 0 0% 100% / 0.04;
+    --win-subtle-hover: 0 0% 100% / 0.07;
+    --win-shadow: 0 8px 32px -8px hsl(0 0% 0% / 0.36), 0 2px 8px -2px hsl(0 0% 0% / 0.2);
+    --win-border: 0 0% 100% / 0.08;
+    --win-taskbar: 220 10% 10% / 0.82;
+    --win-start-menu: 220 10% 10% / 0.9;
+    --win-title-bar: 220 10% 12% / 0.88;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  .font-code {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  }
+}
+
+@keyframes float-slow {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+@layer components {
+  .win-mica {
+    background: hsl(var(--win-mica));
+    backdrop-filter: blur(30px) saturate(125%);
+    -webkit-backdrop-filter: blur(30px) saturate(125%);
+  }
+
+  .win-acrylic {
+    background: hsl(var(--win-acrylic));
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+  }
+
+  .win-taskbar {
+    background: hsl(var(--win-taskbar));
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+  }
+
+  .win-start-menu {
+    background: hsl(var(--win-start-menu));
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+  }
+
+  .win-shadow {
+    box-shadow: var(--win-shadow);
+  }
+
+  .win-border {
+    border: 1px solid hsl(var(--win-border));
+  }
+
+  .win-subtle {
+    background: hsl(var(--win-subtle));
+  }
+
+  .win-subtle-hover {
+    @apply transition-colors duration-100;
+  }
+  .win-subtle-hover:hover {
+    background: hsl(var(--win-subtle-hover));
+  }
+}
