@@ -1,0 +1,12 @@
+services:
+  - type: static
+    name: interactive-portfolio-os
+    env: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    autoDeploy: true
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
