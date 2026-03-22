@@ -8,6 +8,7 @@ import Terminal from '@/components/apps/Terminal';
 import Notepad from '@/components/apps/Notepad';
 import Settings from '@/components/apps/Settings';
 import { APPS } from '@/lib/windowManager';
+import React from 'react';
 
 const AppContent: Record<string, React.ReactNode> = {
   'file-explorer': <FileExplorer />,
@@ -32,8 +33,8 @@ const Desktop = () => {
       {/* Identity overlay */}
       <div className="absolute inset-0 pointer-events-none z-10">
         <div className="absolute top-24 left-[18%] text-[hsl(0,0%,100%)] drop-shadow-2xl space-y-3 float-slow">
-          <div className="text-5xl sm:text-6xl font-semibold tracking-wide">RAJARSHI SAHA</div>
-          <div className="text-lg sm:text-xl text-[hsl(0,0%,90%)]">AI Engineer • System Builder</div>
+          <div className="text-5xl sm:text-6xl font-semibold tracking-wide" style={{ fontFamily: 'Segoe UI' }}>RAJARSHI SAHA</div>
+          <div className="text-lg sm:text-xl text-[hsl(0,0%,90%)]">AI Engineer - System Builder</div>
           <div className="max-w-xl text-sm sm:text-base text-[hsl(0,0%,85%)]">
             Building intelligent systems that solve real-world problems with practical, deployable ML.
           </div>
@@ -42,7 +43,7 @@ const Desktop = () => {
           RS
         </div>
         <div className="absolute bottom-24 left-[18%] text-[10px] uppercase tracking-[0.5em] text-[hsl(0,0%,85%)]">
-          AI • SYSTEMS • DATA • AUTOMATION
+          AI - SYSTEMS - DATA - AUTOMATION
         </div>
       </div>
 
@@ -76,10 +77,14 @@ const Desktop = () => {
           <button
             key={app.id}
             onDoubleClick={() => openApp(app.id)}
-            className="flex flex-col items-center gap-1 p-2 rounded-md hover:bg-[hsl(0,0%,100%,0.12)] w-20 text-center transition-colors"
+            onPointerUp={(e) => {
+              if (e.pointerType === 'touch') openApp(app.id);
+            }}
+            className="flex flex-col items-center justify-center gap-1.5 p-2 rounded-md hover:bg-[hsl(0,0%,100%,0.1)] w-[76px] h-[84px] text-center transition-colors border border-transparent hover:border-[hsl(0,0%,100%,0.15)] focus:bg-[hsl(0,0%,100%,0.15)] focus:border-[hsl(0,0%,100%,0.2)]"
+            aria-label={`Open ${app.title}`}
           >
-            <span className="text-3xl drop-shadow-lg">{app.icon}</span>
-            <span className="text-[11px] text-[hsl(0,0%,100%)] drop-shadow-md leading-tight">{app.title}</span>
+            <div className="w-10 h-10 drop-shadow-md flex-shrink-0 transition-transform hover:scale-105 active:scale-95">{app.icon}</div>
+            <span className="text-[11px] text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] leading-[1.2]">{app.title}</span>
           </button>
         ))}
       </div>

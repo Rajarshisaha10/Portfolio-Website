@@ -1,26 +1,70 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 
 const DEFAULT_CONTENT = `# Rajarshi Saha | Machine Learning Engineer
 
 ## About Me
-I build intelligent systems that turn complex data into practical, real-world outcomes. My work spans end-to-end ML workflows, from data preparation and model training to deployment-ready inference pipelines. I enjoy bridging research-grade models with production-friendly engineering.
+I design and deploy real-world machine learning systems with a focus on performance, scalability, and usability.
+
+My work goes beyond model training — I build complete pipelines, from data processing to real-time inference and user-facing applications.
+
+I’m particularly interested in bridging the gap between research models and production-ready systems.
+
+---
+
+## What I Build
+- Real-time ML systems (low-latency inference)
+- End-to-end pipelines (data → model → deployment)
+- Interactive AI applications with practical use cases
+
+---
+
+## Featured Work
+- Facial Emotion Recognition  
+  → Real-time CNN-based system with OpenCV integration  
+  → Trained on FER-2013 with optimized inference pipeline  
+
+- AI Therapist Assistant  
+  → Emotion-aware conversational system using Gemini API  
+  → Integrated mood tracking + crisis detection  
+
+- Interactive Portfolio OS  
+  → Browser-based Windows-style environment  
+  → Custom window manager, terminal, and UI system  
+
+---
+
+## Technical Stack
+Languages:
+- Python, JavaScript
+
+ML / AI:
+- TensorFlow, PyTorch, Hugging Face
+
+Backend:
+- Django, Flask, REST APIs
+
+Systems:
+- Real-time inference pipelines
+- Model optimization & deployment
+
+---
 
 ## Education
-- B.Tech in Computer Science and Engineering
-- VIT Chennai, India
+B.Tech in Computer Science  
+VIT Chennai, India
+
+---
 
 ## Contact
-- Location: Chennai, India
-- Email: rajarshisaha123.4@gmail.com
-- GitHub: github.com/Rajarshisaha10
+Location: Chennai, India  
+Email: rajarshisaha123.4@gmail.com  
+GitHub: github.com/Rajarshisaha10  
 
-## Technical Snapshot
-- Languages: Python, JavaScript, HTML, CSS
-- Frameworks: Django
-- ML Stack: TensorFlow, PyTorch, Hugging Face
-- Concepts: DSA, OOP, REST APIs, System Design
+---
 
-Tip: Explore projects in Project Explorer or run commands in AI Lab.exe.`;
+## Quick Note
+Open Project Explorer to view systems.  
+Run commands in AI Lab.exe for interactive demos.`;
 
 const Notepad = () => {
   const [content, setContent] = useState(DEFAULT_CONTENT);

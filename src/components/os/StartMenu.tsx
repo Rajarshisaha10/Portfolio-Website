@@ -25,7 +25,7 @@ const StartMenu = () => {
             exit={{ opacity: 0 }}
           />
           <motion.div
-            className="fixed bottom-14 left-1/2 -translate-x-1/2 w-[580px] h-[520px] rounded-lg win-start-menu win-shadow win-border z-[9995] flex flex-col overflow-hidden"
+            className="fixed bottom-14 left-1/2 -translate-x-1/2 w-[90vw] max-w-[580px] h-[70vh] max-h-[520px] rounded-lg win-start-menu win-shadow win-border z-[9995] flex flex-col overflow-hidden"
             initial={{ opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.96 }}
@@ -34,7 +34,7 @@ const StartMenu = () => {
             {/* Search */}
             <div className="p-4 pb-2">
               <div className="flex items-center gap-2 px-3 py-2 rounded-full win-subtle win-border text-sm text-muted-foreground">
-                <span>🔍</span>
+                <span>Search</span>
                 <span>Type here to search</span>
               </div>
             </div>
@@ -43,22 +43,22 @@ const StartMenu = () => {
             <div className="px-4 pt-2">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-semibold text-foreground">Pinned</span>
-                <button className="text-xs text-muted-foreground win-subtle px-2 py-1 rounded">All apps →</button>
+                <button className="text-xs text-muted-foreground win-subtle px-2 py-1 rounded">All apps -&gt;</button>
               </div>
               <div className="grid grid-cols-6 gap-1">
                 {APPS.map(app => (
                   <button
                     key={app.id}
                     onClick={() => openApp(app.id)}
-                    className="flex flex-col items-center gap-1 p-2 rounded-md win-subtle-hover"
+                    className="flex flex-col items-center justify-center gap-1.5 p-2 rounded-md win-subtle-hover h-[68px]"
                   >
-                    <span className="text-2xl">{app.icon}</span>
+                    <div className="w-7 h-7 flex-shrink-0">{app.icon}</div>
                     <span className="text-[11px] text-foreground truncate w-full text-center">{app.title}</span>
                   </button>
                 ))}
                 {SKILLS.slice(0, 4).map(skill => (
                   <div key={skill} className="flex flex-col items-center gap-1 p-2 rounded-md win-subtle-hover">
-                    <span className="text-2xl">💡</span>
+                    <span className="text-2xl">SK</span>
                     <span className="text-[11px] text-foreground truncate w-full text-center">{skill}</span>
                   </div>
                 ))}
@@ -69,12 +69,12 @@ const StartMenu = () => {
             <div className="px-4 pt-4 flex-1">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-semibold text-foreground">Recommended</span>
-                <button className="text-xs text-muted-foreground win-subtle px-2 py-1 rounded">More →</button>
+                <button className="text-xs text-muted-foreground win-subtle px-2 py-1 rounded">More -&gt;</button>
               </div>
               <div className="space-y-1">
                 {PROJECTS.map(p => (
                   <div key={p.name} className="flex items-center gap-3 p-2 rounded-md win-subtle-hover cursor-pointer">
-                    <span className="text-lg">📄</span>
+                    <span className="text-lg">DOC</span>
                     <div>
                       <div className="text-sm text-foreground">{p.name}</div>
                       <div className="text-[11px] text-muted-foreground">{p.date}</div>
@@ -91,7 +91,7 @@ const StartMenu = () => {
                 <span className="text-sm text-foreground">Rajarshi Saha</span>
               </div>
               <button className="p-2 rounded-md win-subtle-hover" title="Power">
-                ⏻
+                Power
               </button>
             </div>
           </motion.div>

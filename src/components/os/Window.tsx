@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Minus, Square, Copy, X } from 'lucide-react';
 import { useWindows } from '@/contexts/WindowContext';
 import { type WindowState } from '@/lib/windowManager';
 import { useRef, useCallback, type ReactNode } from 'react';
@@ -60,7 +61,7 @@ const Window = ({ windowState, children }: WindowProps) => {
   return (
     <motion.div
       ref={windowRef}
-      className={`fixed rounded-lg win-mica win-shadow win-border flex flex-col overflow-hidden ${windowState.isMinimized ? 'animate-win-minimize pointer-events-none' : 'animate-win-open'}`}
+      className={`fixed rounded-xl win-mica win-shadow win-border flex flex-col overflow-hidden ${windowState.isMinimized ? 'animate-win-minimize pointer-events-none' : 'animate-win-open'}`}
       style={style}
       onClick={() => focusWindow(windowState.id)}
       initial={false}
@@ -70,32 +71,35 @@ const Window = ({ windowState, children }: WindowProps) => {
         className={`flex items-center h-9 px-3 shrink-0 select-none cursor-default ${isActive ? '' : 'opacity-70'}`}
         onMouseDown={onMouseDown}
       >
-        <span className="text-sm mr-2">{windowState.icon}</span>
+        <div className="w-3.5 h-3.5 mr-2 flex-shrink-0">{windowState.icon}</div>
         <span className="text-xs text-foreground flex-1 truncate">{windowState.title}</span>
-        <div className="flex items-center -mr-1">
+        <div className="flex items-center -mr-3">
           <button
             onClick={(e) => { e.stopPropagation(); minimizeWindow(windowState.id); }}
-            className="w-[46px] h-8 flex items-center justify-center hover:bg-[hsl(var(--win-subtle-hover))] rounded-sm transition-colors"
+            className="w-11 h-7 flex items-center justify-center hover:bg-[hsl(var(--win-subtle-hover))] transition-colors"
+            aria-label={`Minimize ${windowState.title}`}
           >
-            <span className="text-[10px] text-foreground">─</span>
+            <Minus className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); maximizeWindow(windowState.id); }}
-            className="w-[46px] h-8 flex items-center justify-center hover:bg-[hsl(var(--win-subtle-hover))] rounded-sm transition-colors"
+            className="w-11 h-7 flex items-center justify-center hover:bg-[hsl(var(--win-subtle-hover))] transition-colors"
+            aria-label={`${windowState.isMaximized ? 'Restore' : 'Maximize'} ${windowState.title}`}
           >
-            <span className="text-[10px] text-foreground">{windowState.isMaximized ? '❐' : '□'}</span>
+            {windowState.isMaximized ? <Copy className="w-3 h-3" /> : <Square className="w-3 h-3" />}
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); closeWindow(windowState.id); }}
-            className="w-[46px] h-8 flex items-center justify-center hover:bg-destructive hover:text-destructive-foreground rounded-sm transition-colors"
+            className="w-11 h-7 flex items-center justify-center hover:bg-[#e81123] hover:text-white transition-colors rounded-tr-xl"
+            aria-label={`Close ${windowState.title}`}
           >
-            <span className="text-[10px]">✕</span>
+            <X className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto bg-[hsl(var(--background))]">
         {children}
       </div>
     </motion.div>

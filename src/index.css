@@ -48,35 +48,35 @@
   }
 
   .dark {
-    --background: 220 10% 8%;
+    --background: 0 0% 6%; /* #0f0f0f */
     --foreground: 0 0% 95%;
-    --card: 220 10% 10%;
+    --card: 0 0% 11%; /* #1c1c1c */
     --card-foreground: 0 0% 95%;
-    --popover: 220 10% 10%;
+    --popover: 0 0% 11%;
     --popover-foreground: 0 0% 95%;
-    --primary: 207 90% 54%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 10% 16%;
-    --secondary-foreground: 0 0% 90%;
+    --primary: 200 100% 65%; /* #4cc2ff */
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 100%;
     --muted: 220 10% 16%;
     --muted-foreground: 0 0% 55%;
     --accent: 207 90% 54%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 207 90% 54%;
+    --border: 0 0% 100% / 0.08; /* rgba(255,255,255,0.08) */
+    --input: 0 0% 15%;
+    --ring: 200 100% 65%;
 
-    --win-mica: 220 10% 8% / 0.78;
-    --win-acrylic: 220 10% 6% / 0.72;
+    --win-mica: 0 0% 12% / 0.6; /* rgba(30, 30, 30, 0.6) */
+    --win-acrylic: 0 0% 12% / 0.6;
     --win-subtle: 0 0% 100% / 0.04;
-    --win-subtle-hover: 0 0% 100% / 0.07;
-    --win-shadow: 0 8px 32px -8px hsl(0 0% 0% / 0.36), 0 2px 8px -2px hsl(0 0% 0% / 0.2);
+    --win-subtle-hover: 0 0% 100% / 0.1;
+    --win-shadow: 0 10px 30px rgba(0,0,0,0.4);
     --win-border: 0 0% 100% / 0.08;
-    --win-taskbar: 220 10% 10% / 0.82;
-    --win-start-menu: 220 10% 10% / 0.9;
-    --win-title-bar: 220 10% 12% / 0.88;
+    --win-taskbar: 0 0% 8% / 0.6; /* rgba(20,20,20,0.6) */
+    --win-start-menu: 0 0% 10% / 0.7;
+    --win-title-bar: 0 0% 12% / 0.6;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -95,7 +95,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
   }
 
   .font-code {
@@ -104,15 +104,9 @@
 }
 
 @keyframes float-slow {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
 }
 
 .float-slow {
@@ -122,26 +116,26 @@
 @layer components {
   .win-mica {
     background: hsl(var(--win-mica));
-    backdrop-filter: blur(30px) saturate(125%);
-    -webkit-backdrop-filter: blur(30px) saturate(125%);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
   }
 
   .win-acrylic {
     background: hsl(var(--win-acrylic));
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
   }
 
   .win-taskbar {
     background: hsl(var(--win-taskbar));
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 
   .win-start-menu {
     background: hsl(var(--win-start-menu));
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
   }
 
   .win-shadow {

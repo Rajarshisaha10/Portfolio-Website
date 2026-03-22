@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUp, Cloud, RefreshCw } from 'lucide-react';
 
 type FileKind = 'project' | 'skill' | 'tool' | 'concept';
@@ -293,14 +293,14 @@ const FileExplorer = () => {
         <div key={node.id}>
           <button
             onClick={() => toggleFolder(node.id)}
-            className={`w-full flex items-center gap-2 py-1.5 ${padding} text-xs text-foreground hover:text-primary transition`}
+            className={`w-full flex items-center gap-2 py-1.5 px-2 ml-${depth > 0 ? depth * 2 : 0} rounded-md text-xs text-foreground transition-all duration-200 hover:bg-[hsl(var(--win-subtle-hover))] active:scale-[0.98]`}
           >
-            <span>{node.icon}</span>
+            <span className="text-sm">{node.icon}</span>
             <span className="font-medium">{node.label}</span>
-            <span className="ml-auto text-[10px] text-muted-foreground">{isOpen ? '▾' : '▸'}</span>
+            <span className="ml-auto text-xs text-muted-foreground mr-1">{isOpen ? '▾' : '▸'}</span>
           </button>
           {isOpen && node.children ? (
-            <div className="space-y-1">
+            <div className="space-y-0.5 mt-0.5 animate-in slide-in-from-top-2 fade-in duration-200">
               {renderTree(node.children, depth + 1)}
             </div>
           ) : null}
@@ -313,13 +313,13 @@ const FileExplorer = () => {
       <button
         key={node.id}
         onClick={() => openFile(node.fileId ?? '', node.fileKind ?? 'project')}
-        className={`w-full flex items-center gap-2 py-1.5 ${padding} rounded-md text-[11px] transition ${
+        className={`w-full flex items-center gap-2 py-1.5 px-2 ml-${depth > 0 ? depth * 2 : 0} rounded-md text-[11.5px] transition-all duration-200 ${
           isActive
-            ? 'bg-[hsl(var(--win-subtle-hover))] text-foreground'
-            : 'text-muted-foreground hover:text-foreground'
+            ? 'bg-[hsl(0,0%,100%,0.12)] text-foreground shadow-sm font-medium win-border'
+            : 'text-muted-foreground hover:bg-[hsl(0,0%,100%,0.06)] hover:text-foreground'
         }`}
       >
-        <span>{node.icon}</span>
+        <span className="text-sm">{node.icon}</span>
         <span className="truncate">{node.label}</span>
       </button>
     );
@@ -342,11 +342,13 @@ const FileExplorer = () => {
             <RefreshCw className="mx-auto h-4 w-4" />
           </button>
         </div>
-        <div className="flex flex-1 items-center gap-2 rounded-lg border border-border bg-[hsl(var(--win-subtle))] px-3 py-2 text-xs text-foreground">
-          <Cloud className="h-4 w-4 text-primary" />
-          <span className="text-muted-foreground">Project Explorar</span>
-          <span className="text-muted-foreground">›</span>
-          <span className="truncate">{breadcrumb}</span>
+        <div className="flex flex-1 items-center gap-1.5 rounded-lg border border-border bg-[hsl(var(--win-subtle))] px-3 py-2 text-xs">
+          <Cloud className="h-4 w-4 text-primary opacity-80" />
+          <span className="text-foreground/60 whitespace-nowrap">Project Explorar</span>
+          <span className="text-foreground/30 whitespace-nowrap tracking-tight">›</span>
+          <span className="text-foreground/60 whitespace-nowrap">{activeFileKind === 'project' ? 'Projects' : activeFileKind.charAt(0).toUpperCase() + activeFileKind.slice(1)}</span>
+          <span className="text-foreground/30 whitespace-nowrap tracking-tight">›</span>
+          <span className="text-foreground font-semibold truncate">{activeFileName}</span>
         </div>
         <div className="flex items-center gap-2 rounded-lg border border-border bg-[hsl(var(--win-subtle))] px-3 py-2 text-xs text-muted-foreground w-48 sm:w-64">
           <span>Search</span>
@@ -386,74 +388,54 @@ const FileExplorer = () => {
             <div className="mt-2 text-[11px] text-muted-foreground">{breadcrumb}</div>
           </div>
 
-          <div className="px-4 py-5 font-code">
-            <div className="rounded-2xl border border-border bg-[hsl(var(--win-subtle))] p-6 shadow-sm space-y-5">
+            <div className="rounded-2xl border border-border bg-[hsl(var(--win-subtle))] p-8 shadow-sm space-y-8">
               {activeFileKind === 'project' && activeProject ? (
                 <>
-                  <div className={`h-28 w-full rounded-2xl bg-gradient-to-r ${activeProject.accent} border border-border`} />
-                  <div>
-                    <h1 className="text-2xl font-semibold text-foreground">{activeProject.title}</h1>
-                    <div className="mt-1 text-sm text-muted-foreground">{activeProject.subtitle}</div>
-                    <p className="mt-4 text-sm text-foreground">{activeProject.summary}</p>
+                  <div className="border-b border-border/50 pb-6">
+                    <h1 className="text-3xl font-semibold text-foreground tracking-tight">{activeProject.title}</h1>
+                    <div className="mt-2 text-[15px] font-medium text-muted-foreground">{activeProject.subtitle}</div>
+                    <p className="mt-5 text-[15px] text-foreground/80 leading-relaxed max-w-3xl">{activeProject.summary}</p>
                   </div>
-                  <div className="space-y-3">
-                    <h2 className="text-sm font-semibold text-foreground">Overview</h2>
-                    <div className="space-y-2 text-xs text-foreground">
-                      {activeProject.overview.map(item => (
-                        <div key={item} className="flex gap-2">
-                          <span className="text-primary">●</span>
-                          <span>{item}</span>
-                        </div>
-                      ))}
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                      <h2 className="text-[15px] font-semibold text-foreground">Overview</h2>
+                      <div className="space-y-3 text-[13px] text-foreground/80">
+                        {activeProject.overview.map(item => (
+                          <div key={item} className="flex gap-3 items-start">
+                            <span className="text-primary mt-1 text-[10px]">●</span>
+                            <span className="flex-1 leading-relaxed">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <h2 className="text-[15px] font-semibold text-foreground">Key Features</h2>
+                      <div className="space-y-3 text-[13px] text-foreground/80">
+                        {activeProject.features.map(item => (
+                          <div key={item} className="flex gap-3 items-start">
+                            <span className="text-primary mt-1 text-[10px]">●</span>
+                            <span className="flex-1 leading-relaxed">{item}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  <div className="space-y-3">
-                    <h2 className="text-sm font-semibold text-foreground">Key Features</h2>
-                    <div className="space-y-2 text-xs text-foreground">
-                      {activeProject.features.map(item => (
-                        <div key={item} className="flex gap-2">
-                          <span className="text-primary">●</span>
-                          <span>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <h2 className="text-sm font-semibold text-foreground">Tech Stack</h2>
-                    <div className="flex flex-wrap gap-2">
-                      {activeProject.stack.map(item => (
-                        <span
-                          key={item}
-                          className="rounded-full border border-border bg-[hsl(var(--win-title-bar))] px-3 py-1 text-xs text-foreground"
-                        >
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <h2 className="text-sm font-semibold text-foreground">Metrics</h2>
-                    <div className="flex flex-wrap gap-3">
+
+                  <div className="space-y-4 pt-4 border-t border-border/50">
+                    <h2 className="text-[15px] font-semibold text-foreground">Metrics</h2>
+                    <div className="flex flex-wrap gap-4">
                       {activeProject.metrics.map(metric => (
                         <div
                           key={metric.label}
-                          className="rounded-2xl border border-border bg-[hsl(var(--win-title-bar))] px-4 py-3"
+                          className="rounded-xl border border-border bg-[hsl(var(--win-title-bar))] px-5 py-4 w-40 transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"
                         >
-                          <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">{metric.label}</div>
-                          <div className="mt-1 text-sm font-semibold text-foreground">{metric.value}</div>
+                          <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">{metric.label}</div>
+                          <div className="mt-1.5 text-[15px] font-semibold text-foreground">{metric.value}</div>
                         </div>
                       ))}
                     </div>
-                  </div>
-                  <div>
-                    <a
-                      href={activeProject.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-border bg-[hsl(var(--win-title-bar))] px-4 py-2 text-xs font-semibold text-foreground transition hover:border-primary"
-                    >
-                      View on GitHub
-                    </a>
                   </div>
                 </>
               ) : activeDoc ? (
@@ -462,7 +444,6 @@ const FileExplorer = () => {
                 </div>
               ) : null}
             </div>
-          </div>
         </main>
 
         <aside className="col-span-12 lg:col-span-3 border-t lg:border-t-0 lg:border-l border-border bg-[hsl(var(--win-subtle))] px-4 py-5 space-y-4">
@@ -489,12 +470,41 @@ const FileExplorer = () => {
           </div>
 
           {activeFileKind === 'project' && activeProject ? (
-            <div className="rounded-2xl border border-border bg-[hsl(var(--win-title-bar))] p-4 shadow-sm">
-              <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Quick Preview</div>
-              <div className="mt-3 rounded-xl border border-dashed border-border bg-[hsl(var(--win-subtle))] px-3 py-10 text-center text-[11px] text-muted-foreground">
-                Drop a demo GIF or screenshot here.
+            <>
+              <div className="rounded-2xl border border-border bg-[hsl(var(--win-title-bar))] p-4 shadow-sm space-y-4">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Tech Stack</div>
+                <div className="flex flex-wrap gap-2">
+                  {activeProject.stack.map(item => (
+                    <span
+                      key={item}
+                      className="rounded-md border border-border bg-[hsl(var(--win-subtle))] px-2.5 py-1 text-xs text-foreground shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-[hsl(0,0%,100%,0.08)] cursor-default"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+
+              <div className="rounded-2xl border border-border bg-[hsl(var(--win-title-bar))] p-4 shadow-sm space-y-4">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Actions</div>
+                
+                <a
+                  href={activeProject.github}
+                  target="_blank"
+                  rel="noreferrer"
+                   className="w-full inline-flex justify-center items-center gap-2 rounded-md border border-border bg-[hsl(var(--primary))] px-4 py-2 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-[hsl(var(--primary)/0.9)] hover:shadow-lg active:scale-[0.98]"
+                >
+                  View on GitHub
+                </a>
+
+                <button
+                  disabled
+                  className="w-full inline-flex justify-center items-center gap-2 rounded-md border border-border bg-transparent px-4 py-2 text-sm font-semibold text-muted-foreground opacity-60 cursor-not-allowed"
+                >
+                  Live Demo (Coming Soon)
+                </button>
+              </div>
+            </>
           ) : null}
         </aside>
       </div>
