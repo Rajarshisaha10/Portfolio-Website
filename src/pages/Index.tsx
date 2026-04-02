@@ -9,6 +9,7 @@ import Notepad from '@/components/apps/Notepad';
 import Settings from '@/components/apps/Settings';
 import { APPS } from '@/lib/windowManager';
 import React from 'react';
+import { Briefcase, CircleDot, Cpu, Mail, Plus, Rocket, Target, User } from 'lucide-react';
 
 const AppContent: Record<string, React.ReactNode> = {
   'file-explorer': <FileExplorer />,
@@ -33,10 +34,26 @@ const Desktop = () => {
       {/* Identity overlay */}
       <div className="absolute inset-0 pointer-events-none z-10">
         <div className="absolute top-24 left-[18%] text-[hsl(0,0%,100%)] drop-shadow-2xl space-y-3 float-slow">
-          <div className="text-5xl sm:text-6xl font-semibold tracking-wide" style={{ fontFamily: 'Segoe UI' }}>RAJARSHI SAHA</div>
+          <div className="text-5xl sm:text-6xl font-semibold tracking-wide transition-colors hover:text-white" style={{ fontFamily: 'Segoe UI' }}>
+            RAJARSHI SAHA
+          </div>
           <div className="text-lg sm:text-xl text-[hsl(0,0%,90%)]">AI Engineer - System Builder</div>
           <div className="max-w-xl text-sm sm:text-base text-[hsl(0,0%,85%)]">
             Building intelligent systems that solve real-world problems with practical, deployable ML.
+          </div>
+          <div className="pointer-events-auto flex flex-wrap gap-3 pt-2">
+            <button
+              onClick={() => openApp('file-explorer')}
+              className="rounded-full border border-[hsl(0,0%,100%/0.2)] bg-[hsl(0,0%,0%/0.35)] px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[hsl(0,0%,100%/0.15)]"
+            >
+              View Projects
+            </button>
+            <button
+              onClick={() => openApp('notepad')}
+              className="rounded-full border border-[hsl(0,0%,100%/0.2)] bg-[hsl(0,0%,0%/0.15)] px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 shadow-lg transition-all hover:-translate-y-0.5 hover:text-white hover:bg-[hsl(0,0%,100%/0.15)]"
+            >
+              Contact Me
+            </button>
           </div>
         </div>
         <div className="absolute inset-0 opacity-10 text-[120px] sm:text-[160px] font-semibold text-[hsl(0,0%,100%)] tracking-[0.6em] flex items-center justify-center">
@@ -47,28 +64,73 @@ const Desktop = () => {
         </div>
       </div>
 
-      <div className="absolute top-6 right-6 z-10 rounded-2xl bg-[hsl(0,0%,0%/0.38)] backdrop-blur-md border border-[hsl(0,0%,100%/0.15)] px-5 py-4 text-[11px] text-[hsl(0,0%,92%)] space-y-2">
+      <div className="absolute top-6 right-6 z-10 rounded-2xl bg-[hsl(0,0%,0%/0.38)] backdrop-blur-md border border-[hsl(0,0%,100%/0.15)] px-5 py-4 text-[11px] text-[hsl(0,0%,92%)] space-y-3">
         <div className="uppercase tracking-[0.35em] text-[10px] text-[hsl(0,0%,75%)]">System Profile</div>
-        <div className="flex justify-between gap-6">
-          <span className="text-[hsl(0,0%,75%)]">Name</span>
-          <span>Rajarshi Saha</span>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-6 border-b border-[hsl(0,0%,100%/0.08)] pb-2">
+            <span className="flex items-center gap-2 text-[hsl(0,0%,75%)]">
+              <User className="h-3.5 w-3.5" />
+              Name
+            </span>
+            <span className="font-code text-[12px] text-white">Rajarshi Saha</span>
+          </div>
+          <div className="flex items-center justify-between gap-6 border-b border-[hsl(0,0%,100%/0.08)] pb-2">
+            <span className="flex items-center gap-2 text-[hsl(0,0%,75%)]">
+              <Briefcase className="h-3.5 w-3.5" />
+              Role
+            </span>
+            <span className="font-code text-[12px] text-white">AI Engineer</span>
+          </div>
+          <div className="flex items-center justify-between gap-6 border-b border-[hsl(0,0%,100%/0.08)] pb-2">
+            <span className="flex items-center gap-2 text-[hsl(0,0%,75%)]">
+              <Target className="h-3.5 w-3.5" />
+              Focus
+            </span>
+            <span className="font-code text-[12px] text-white">ML Systems</span>
+          </div>
+          <div className="flex items-center justify-between gap-6 border-b border-[hsl(0,0%,100%/0.08)] pb-2">
+            <span className="flex items-center gap-2 text-[hsl(0,0%,75%)]">
+              <Rocket className="h-3.5 w-3.5" />
+              Mission
+            </span>
+            <span className="font-code text-[12px] text-white">Real-time AI apps</span>
+          </div>
+          <div className="flex items-center justify-between gap-6">
+            <span className="flex items-center gap-2 text-[hsl(0,0%,75%)]">
+              <CircleDot className="h-3.5 w-3.5 text-emerald-400" />
+              Status
+            </span>
+            <span className="font-code text-[12px] text-emerald-200">Online</span>
+          </div>
         </div>
-        <div className="flex justify-between gap-6">
-          <span className="text-[hsl(0,0%,75%)]">Role</span>
-          <span>AI Engineer</span>
+        <div className="pt-2">
+          <div className="text-[10px] uppercase tracking-[0.3em] text-[hsl(0,0%,75%)]">Neural Activity</div>
+          <div className="mt-2 h-2 rounded-full bg-[hsl(0,0%,100%/0.1)] overflow-hidden">
+            <div className="h-full w-2/3 rounded-full bg-[hsl(200,100%,60%/0.7)] animate-pulse" />
+          </div>
+          <div className="mt-2 flex items-center justify-between text-[10px] text-[hsl(0,0%,80%)]">
+            <span className="flex items-center gap-1">
+              <Cpu className="h-3 w-3 text-primary" />
+              Models running
+            </span>
+            <span className="font-code text-[11px] text-white">3</span>
+          </div>
         </div>
-        <div className="flex justify-between gap-6">
-          <span className="text-[hsl(0,0%,75%)]">Focus</span>
-          <span>ML Systems</span>
-        </div>
-        <div className="flex justify-between gap-6">
-          <span className="text-[hsl(0,0%,75%)]">Mission</span>
-          <span>Real-time AI apps</span>
-        </div>
-        <div className="flex justify-between gap-6">
-          <span className="text-[hsl(0,0%,75%)]">Status</span>
-          <span>Online</span>
-        </div>
+      </div>
+
+      <div className="absolute bottom-20 right-6 z-10 pointer-events-auto flex flex-col gap-2">
+        <button className="inline-flex items-center gap-2 rounded-full border border-[hsl(0,0%,100%/0.2)] bg-[hsl(0,0%,0%/0.35)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[hsl(0,0%,100%/0.15)]">
+          <Plus className="h-3.5 w-3.5" />
+          New Project
+        </button>
+        <button className="inline-flex items-center gap-2 rounded-full border border-[hsl(0,0%,100%/0.2)] bg-[hsl(0,0%,0%/0.25)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/90 shadow-lg transition-all hover:-translate-y-0.5 hover:bg-[hsl(0,0%,100%/0.15)]">
+          <Rocket className="h-3.5 w-3.5" />
+          Run Demo
+        </button>
+        <button className="inline-flex items-center gap-2 rounded-full border border-[hsl(0,0%,100%/0.2)] bg-[hsl(0,0%,0%/0.2)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80 shadow-lg transition-all hover:-translate-y-0.5 hover:text-white hover:bg-[hsl(0,0%,100%/0.15)]">
+          <Mail className="h-3.5 w-3.5" />
+          Live Models
+        </button>
       </div>
 
       {/* Desktop icons */}

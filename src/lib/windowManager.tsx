@@ -21,7 +21,7 @@ export interface AppDefinition {
 }
 
 export const APPS: AppDefinition[] = [
-  { id: 'file-explorer', title: 'Project Explorar', icon: <FolderOpen color="#dac071" fill="#dac071" className="w-full h-full" />, defaultSize: { width: 760, height: 520 } },
+  { id: 'file-explorer', title: 'Project Explorer', icon: <FolderOpen color="#dac071" fill="#dac071" className="w-full h-full" />, defaultSize: { width: 760, height: 520 } },
   { id: 'terminal', title: 'Neural Lab', icon: <TerminalIcon className="w-full h-full text-zinc-300" />, defaultSize: { width: 680, height: 440 } },
   { id: 'notepad', title: 'About_Rajarshi.txt', icon: <FileText className="w-full h-full text-blue-300" />, defaultSize: { width: 560, height: 420 } },
   { id: 'settings', title: 'HireMe.exe', icon: <Mail className="w-full h-full text-indigo-400" />, defaultSize: { width: 600, height: 440 } },

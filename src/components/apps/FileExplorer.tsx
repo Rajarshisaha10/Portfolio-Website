@@ -1,5 +1,23 @@
 import { useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, ArrowUp, Cloud, RefreshCw } from 'lucide-react';
+import {
+  Activity,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  BarChart3,
+  Brain,
+  ChevronRight,
+  Cloud,
+  FileText,
+  Folder,
+  FolderOpen,
+  Globe,
+  Mail,
+  RefreshCw,
+  Settings2,
+  Sparkles,
+  User,
+} from 'lucide-react';
 
 type FileKind = 'project' | 'skill' | 'tool' | 'concept';
 
@@ -32,7 +50,6 @@ type DocFile = {
 type TreeNode = {
   id: string;
   label: string;
-  icon: string;
   type: 'folder' | 'file';
   fileId?: string;
   fileKind?: FileKind;
@@ -47,7 +64,7 @@ const projects: Project[] = [
     subtitle: 'Deep CNN | Real-time Emotion Detection',
     summary: 'Real-time emotion classifier trained on FER-2013 with a production-ready inference pipeline.',
     overview: [
-      '4-layer CNN (64→128→256→512 filters) for hierarchical feature learning',
+      '4-layer CNN (64 -> 128 -> 256 -> 512 filters) for hierarchical feature learning',
       '35,000+ FER-2013 grayscale images with augmentation',
       'Live video inference pipeline with OpenCV integration',
     ],
@@ -108,13 +125,13 @@ const projects: Project[] = [
     features: [
       'Benchmarked Linear, Ridge, Lasso, Random Forest, XGBoost',
       'GridSearchCV with k-fold validation',
-      'MAE/RMSE/R² reporting for clear evaluation',
+      'MAE/RMSE/R2 reporting for clear evaluation',
     ],
     stack: ['Python', 'Scikit-learn', 'XGBoost', 'Pandas', 'Seaborn'],
     metrics: [
       { label: 'Models', value: '5 compared' },
       { label: 'Validation', value: 'K-fold' },
-      { label: 'Metrics', value: 'MAE / RMSE / R²' },
+      { label: 'Metrics', value: 'MAE / RMSE / R2' },
     ],
     github: 'https://github.com/Rajarshisaha10/House_price_pred',
     accent: 'from-amber-400/40 via-orange-400/30 to-rose-400/30',
@@ -157,12 +174,10 @@ const tree: TreeNode[] = [
   {
     id: 'projects-folder',
     label: 'Projects',
-    icon: '📁',
     type: 'folder',
     children: projects.map(project => ({
       id: `file-${project.id}`,
       label: project.fileName,
-      icon: '📄',
       type: 'file',
       fileId: project.id,
       fileKind: 'project',
@@ -171,12 +186,10 @@ const tree: TreeNode[] = [
   {
     id: 'skills-folder',
     label: 'Skills',
-    icon: '📁',
     type: 'folder',
     children: docs.filter(doc => doc.kind === 'skill').map(doc => ({
       id: `file-${doc.id}`,
       label: doc.fileName,
-      icon: '📄',
       type: 'file',
       fileId: doc.id,
       fileKind: doc.kind,
@@ -185,17 +198,28 @@ const tree: TreeNode[] = [
   {
     id: 'tools-folder',
     label: 'Tools',
-    icon: '📁',
     type: 'folder',
     children: docs.filter(doc => doc.kind !== 'skill').map(doc => ({
       id: `file-${doc.id}`,
       label: doc.fileName,
-      icon: '📄',
       type: 'file',
       fileId: doc.id,
       fileKind: doc.kind,
     })),
   },
+];
+
+const navPrimary = [
+  { id: 'explorer', label: 'Project Explorer', icon: Folder },
+  { id: 'neural', label: 'Neural Lab', icon: Brain },
+  { id: 'about', label: 'About', icon: User },
+  { id: 'contact', label: 'Contact', icon: Mail },
+];
+
+const navSecondary = [
+  { id: 'settings', label: 'Settings', icon: Settings2 },
+  { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+  { id: 'socials', label: 'Socials', icon: Globe },
 ];
 
 const parseMarkdown = (content: string) => {
@@ -226,7 +250,7 @@ const parseMarkdown = (content: string) => {
         <div key={`ul-${index}`} className="space-y-2 text-xs text-foreground">
           {items.map(item => (
             <div key={item} className="flex gap-2">
-              <span className="text-primary">●</span>
+              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
               <span>{item}</span>
             </div>
           ))}
@@ -246,9 +270,9 @@ const FileExplorer = () => {
   const [activeFileId, setActiveFileId] = useState(projects[0].id);
   const [activeFileKind, setActiveFileKind] = useState<FileKind>('project');
   const [openFolders, setOpenFolders] = useState<Record<string, boolean>>({
-    'projects-folder': false,
-    'skills-folder': false,
-    'tools-folder': false,
+    'projects-folder': true,
+    'skills-folder': true,
+    'tools-folder': true,
   });
 
   const activeProject = useMemo(
@@ -260,10 +284,6 @@ const FileExplorer = () => {
     () => docs.find(doc => doc.id === activeFileId),
     [activeFileId]
   );
-
-  const activeTitle = activeFileKind === 'project'
-    ? activeProject?.title ?? 'Project'
-    : activeDoc?.title ?? 'Document';
 
   const activeFileName = activeFileKind === 'project'
     ? activeProject?.fileName ?? 'project.md'
@@ -285,19 +305,30 @@ const FileExplorer = () => {
   };
 
   const renderTree = (nodes: TreeNode[], depth = 0) => nodes.map(node => {
-    const padding = `pl-${Math.min(depth * 3 + 2, 10)}`;
-
     if (node.type === 'folder') {
       const isOpen = openFolders[node.id];
       return (
         <div key={node.id}>
           <button
             onClick={() => toggleFolder(node.id)}
-            className={`w-full flex items-center gap-2 py-1.5 px-2 ml-${depth > 0 ? depth * 2 : 0} rounded-md text-xs text-foreground transition-all duration-200 hover:bg-[hsl(var(--win-subtle-hover))] active:scale-[0.98]`}
+            className={`group w-full flex items-center gap-2 rounded-md px-2 py-2 text-xs font-medium transition-all duration-200 ${
+              isOpen
+                ? 'bg-[hsl(var(--win-subtle-hover))] text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--win-subtle-hover))]'
+            }`}
+            style={{ paddingLeft: 8 + depth * 12 }}
           >
-            <span className="text-sm">{node.icon}</span>
-            <span className="font-medium">{node.label}</span>
-            <span className="ml-auto text-xs text-muted-foreground mr-1">{isOpen ? '▾' : '▸'}</span>
+            {isOpen ? (
+              <FolderOpen className="h-4 w-4 text-primary/80 transition-transform duration-200 group-hover:scale-105" />
+            ) : (
+              <Folder className="h-4 w-4 text-muted-foreground transition-transform duration-200 group-hover:scale-105 group-hover:text-foreground" />
+            )}
+            <span className="tracking-wide">{node.label}</span>
+            <ChevronRight
+              className={`ml-auto h-3.5 w-3.5 transition-transform duration-200 ${
+                isOpen ? 'rotate-90 text-primary' : 'text-muted-foreground'
+              }`}
+            />
           </button>
           {isOpen && node.children ? (
             <div className="space-y-0.5 mt-0.5 animate-in slide-in-from-top-2 fade-in duration-200">
@@ -313,20 +344,26 @@ const FileExplorer = () => {
       <button
         key={node.id}
         onClick={() => openFile(node.fileId ?? '', node.fileKind ?? 'project')}
-        className={`w-full flex items-center gap-2 py-1.5 px-2 ml-${depth > 0 ? depth * 2 : 0} rounded-md text-[11.5px] transition-all duration-200 ${
+        className={`group relative w-full flex items-center gap-2 rounded-md px-2 py-1.5 text-[11.5px] transition-all duration-200 ${
           isActive
             ? 'bg-[hsl(0,0%,100%,0.12)] text-foreground shadow-sm font-medium win-border'
             : 'text-muted-foreground hover:bg-[hsl(0,0%,100%,0.06)] hover:text-foreground'
         }`}
+        style={{ paddingLeft: 8 + depth * 12 }}
       >
-        <span className="text-sm">{node.icon}</span>
+        <span
+          className={`absolute left-1 top-1/2 h-4 w-[2px] -translate-y-1/2 rounded-full transition-opacity ${
+            isActive ? 'bg-primary opacity-100' : 'bg-transparent opacity-0'
+          }`}
+        />
+        <FileText className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground" />
         <span className="truncate">{node.label}</span>
       </button>
     );
   });
 
   return (
-    <div className="h-full bg-[radial-gradient(60%_60%_at_0%_0%,hsl(var(--primary)/0.16),transparent_60%),radial-gradient(50%_50%_at_100%_10%,hsl(var(--accent)/0.12),transparent_55%)]">
+    <div className="file-explorer h-full bg-[radial-gradient(60%_60%_at_0%_0%,hsl(var(--primary)/0.16),transparent_60%),radial-gradient(50%_50%_at_100%_10%,hsl(var(--accent)/0.12),transparent_55%)]">
       <div className="flex items-center gap-3 h-14 border-b border-border bg-[hsl(var(--win-title-bar))] px-3">
         <div className="flex items-center gap-1">
           <button className="h-8 w-8 rounded-lg border border-border bg-[hsl(var(--win-subtle))] text-muted-foreground transition hover:text-foreground hover:border-primary" type="button">
@@ -344,10 +381,10 @@ const FileExplorer = () => {
         </div>
         <div className="flex flex-1 items-center gap-1.5 rounded-lg border border-border bg-[hsl(var(--win-subtle))] px-3 py-2 text-xs">
           <Cloud className="h-4 w-4 text-primary opacity-80" />
-          <span className="text-foreground/60 whitespace-nowrap">Project Explorar</span>
-          <span className="text-foreground/30 whitespace-nowrap tracking-tight">›</span>
+          <span className="text-foreground/60 whitespace-nowrap">Project Explorer</span>
+          <span className="text-foreground/30 whitespace-nowrap tracking-tight">&gt;</span>
           <span className="text-foreground/60 whitespace-nowrap">{activeFileKind === 'project' ? 'Projects' : activeFileKind.charAt(0).toUpperCase() + activeFileKind.slice(1)}</span>
-          <span className="text-foreground/30 whitespace-nowrap tracking-tight">›</span>
+          <span className="text-foreground/30 whitespace-nowrap tracking-tight">&gt;</span>
           <span className="text-foreground font-semibold truncate">{activeFileName}</span>
         </div>
         <div className="flex items-center gap-2 rounded-lg border border-border bg-[hsl(var(--win-subtle))] px-3 py-2 text-xs text-muted-foreground w-48 sm:w-64">
@@ -356,24 +393,109 @@ const FileExplorer = () => {
         </div>
       </div>
       <div className="grid h-[calc(100%-56px)] grid-cols-12 gap-6">
-        <aside className="col-span-12 lg:col-span-2 border-b lg:border-b-0 lg:border-r border-border bg-[linear-gradient(180deg,hsl(var(--win-subtle))_0%,transparent_100%)] px-3 py-4 lg:px-4 lg:py-5 space-y-4">
-          <div className="rounded-xl border border-border bg-[hsl(var(--win-subtle))] p-3 shadow-sm">
-            <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Project Explorar</div>
-            <div className="mt-2 flex items-center gap-2">
-              <div className="h-9 w-9 rounded-lg bg-[hsl(var(--win-title-bar))] border border-border flex items-center justify-center text-xs font-semibold">
-                RS
+        <aside className="col-span-12 lg:col-span-2 border-b lg:border-b-0 lg:border-r border-border bg-[linear-gradient(180deg,hsl(var(--win-subtle))_0%,transparent_100%)] px-3 py-4 lg:px-4 lg:py-5 space-y-5">
+          <div className="rounded-2xl bg-gradient-to-br from-[hsl(var(--primary)/0.45)] via-transparent to-[hsl(var(--accent)/0.35)] p-[1px] shadow-[0_12px_30px_-18px_rgba(0,0,0,0.6)]">
+            <div className="rounded-[15px] border border-border/70 bg-[linear-gradient(145deg,hsl(var(--win-title-bar)),hsl(var(--win-subtle)))] p-3">
+              <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                <span>Project Explorer</span>
+                <span className="flex items-center gap-1 text-[9px] text-emerald-300">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  Online
+                </span>
               </div>
-              <div>
-                <div className="text-xs font-semibold text-foreground">Rajarshi Saha</div>
-                <div className="text-[10px] text-muted-foreground">ML Engineer</div>
+              <div className="mt-3 flex items-center gap-2.5">
+                <div className="relative h-10 w-10 rounded-xl bg-[linear-gradient(135deg,hsl(var(--primary)/0.5),hsl(var(--accent)/0.4))] border border-border flex items-center justify-center text-xs font-semibold text-foreground shadow-sm">
+                  RS
+                  <span className="absolute -bottom-1 -right-1 h-2.5 w-2.5 rounded-full border-2 border-[hsl(var(--win-title-bar))] bg-emerald-400" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-foreground tracking-tight">Rajarshi Saha</div>
+                  <div className="text-[11px] text-primary font-medium">ML Engineer</div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div>
-            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">File Tree</div>
-            <div className="mt-2 space-y-1">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+              <span>File Tree</span>
+              <span className="h-px flex-1 bg-border/70" />
+            </div>
+            <div className="space-y-1">
               {renderTree(tree)}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+              <span>Navigation</span>
+              <span className="h-px flex-1 bg-border/70" />
+            </div>
+            <div className="space-y-1">
+              {navPrimary.map((item, index) => {
+                const isActive = index === 0;
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    title={item.label}
+                    className={`group flex w-full items-center gap-2 rounded-lg border border-transparent px-2.5 py-2 text-xs transition-all duration-200 ${
+                      isActive
+                        ? 'bg-[hsl(var(--win-subtle-hover))] text-foreground shadow-sm border-border/70'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--win-subtle-hover))]'
+                    }`}
+                  >
+                    <Icon className={`h-4 w-4 ${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'}`} />
+                    <span className="max-w-0 overflow-hidden whitespace-nowrap text-[11px] opacity-0 transition-all duration-200 group-hover:max-w-[140px] group-hover:opacity-100">
+                      {item.label}
+                    </span>
+                    {isActive ? <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" /> : null}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="h-px bg-border/60" />
+            <div className="space-y-1">
+              {navSecondary.map(item => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    title={item.label}
+                    className="group flex w-full items-center gap-2 rounded-lg border border-transparent px-2.5 py-2 text-xs text-muted-foreground transition-all duration-200 hover:text-foreground hover:bg-[hsl(var(--win-subtle-hover))]"
+                  >
+                    <Icon className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
+                    <span className="max-w-0 overflow-hidden whitespace-nowrap text-[11px] opacity-0 transition-all duration-200 group-hover:max-w-[140px] group-hover:opacity-100">
+                      {item.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+              <span>Quick Actions</span>
+              <span className="h-px flex-1 bg-border/70" />
+            </div>
+            <div className="grid gap-2">
+              <button
+                type="button"
+                className="inline-flex items-center justify-between rounded-lg border border-border bg-[hsl(var(--win-subtle))] px-3 py-2 text-[11px] font-medium text-foreground transition-all hover:-translate-y-0.5 hover:bg-[hsl(var(--win-subtle-hover))] hover:shadow-sm"
+              >
+                New Project
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center justify-between rounded-lg border border-border bg-[hsl(var(--win-subtle))] px-3 py-2 text-[11px] font-medium text-foreground transition-all hover:-translate-y-0.5 hover:bg-[hsl(var(--win-subtle-hover))] hover:shadow-sm"
+              >
+                Add Skill
+                <Activity className="h-3.5 w-3.5 text-primary" />
+              </button>
             </div>
           </div>
         </aside>
@@ -382,7 +504,10 @@ const FileExplorer = () => {
           <div className="border-b border-border px-4 py-3">
             <div className="flex items-center gap-2">
               <div className="rounded-t-md border border-border bg-[hsl(var(--win-title-bar))] px-3 py-1 text-[11px] text-foreground shadow-sm">
-                📄 {activeFileName}
+                <span className="inline-flex items-center gap-1.5">
+                  <FileText className="h-3.5 w-3.5 text-primary/80" />
+                  {activeFileName}
+                </span>
               </div>
             </div>
             <div className="mt-2 text-[11px] text-muted-foreground">{breadcrumb}</div>
@@ -403,7 +528,7 @@ const FileExplorer = () => {
                       <div className="space-y-3 text-[13px] text-foreground/80">
                         {activeProject.overview.map(item => (
                           <div key={item} className="flex gap-3 items-start">
-                            <span className="text-primary mt-1 text-[10px]">●</span>
+                            <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary" />
                             <span className="flex-1 leading-relaxed">{item}</span>
                           </div>
                         ))}
@@ -415,7 +540,7 @@ const FileExplorer = () => {
                       <div className="space-y-3 text-[13px] text-foreground/80">
                         {activeProject.features.map(item => (
                           <div key={item} className="flex gap-3 items-start">
-                            <span className="text-primary mt-1 text-[10px]">●</span>
+                            <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary" />
                             <span className="flex-1 leading-relaxed">{item}</span>
                           </div>
                         ))}
@@ -506,6 +631,33 @@ const FileExplorer = () => {
               </div>
             </>
           ) : null}
+
+          <div className="rounded-2xl border border-border bg-[hsl(var(--win-title-bar))] p-4 shadow-sm space-y-4">
+            <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Activity</div>
+            <div className="space-y-3 text-xs text-foreground/80">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2">
+                  <BarChart3 className="h-3.5 w-3.5 text-primary" />
+                  Updated portfolio
+                </span>
+                <span className="text-[10px] text-muted-foreground">2d ago</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2">
+                  <Activity className="h-3.5 w-3.5 text-primary" />
+                  Added new skill
+                </span>
+                <span className="text-[10px] text-muted-foreground">5d ago</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2">
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
+                  New project draft
+                </span>
+                <span className="text-[10px] text-muted-foreground">1w ago</span>
+              </div>
+            </div>
+          </div>
         </aside>
       </div>
     </div>
